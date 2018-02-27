@@ -22,7 +22,7 @@ app.use(logger("dev"));
 // Use body-parser for handling form submissions
 app.use(bodyParser.urlencoded({ extended: false }));
 // Use express.static to serve the public folder as a static directory
-app.use(express.static(__dirname + "/public"));
+app.use(express.static("public"));
 
 // By default mongoose uses callbacks for async queries, we're setting it to use promises (.then syntax) instead
 // Connect to the Mongo DB
@@ -31,7 +31,7 @@ var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/nytimesarticle
 
 mongoose.Promise = Promise;
 mongoose.connect(MONGODB_URI, {
-    
+    useMongoClient: true
 });
 
 
