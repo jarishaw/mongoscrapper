@@ -8,17 +8,42 @@ $.getJSON("/articles", function (data) {
         // Display the apropos information on the page
         $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].headline + "<br />" + data[i].url + "br />" + data[i].summary + "</p>");
 
-        // $("#articles").append("<button data-id='" + data._id + "' id='savearticle'>Save Article</button>")
+        $("#articles").append("<button data-id='" + data[i]._id + "' id='savearticle'>Save Article</button>");
     }
 });
 
 });
 // when save article button clicked
-// $(document).on("click", "#savearticle", function (){
-    
+$(document).on("click", "#savearticle", function (){
+    var thisId = $(this).attr("data-id");
 
-// })
+    // Now make an ajax call for the Article
+    $.ajax({
+        method: "PUT",
+        url: "/articles/saved/" + thisId,
+        data: {
+            saved: true
+        }
+    })
+        // With that done, add the note information to the page
+        .then(function (data) {
+            console.log(data);
+            // The title of the article
+            for (var i = 0; i < data.length; i++) {
+            $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].headline + "<br />" + data[i].url + "br />" + data[i].summary + "</p>");
+            // $("#articlesaved").append("<h2>" + data.headline + "</h2>");
+            // // An input to enter a new title
+            // $("#articlesaved").append("<input id='titleinput' name='title' >");
+            // // A textarea to add a new note body
+            // $("#articlesaved").append("<textarea id='bodyinput' name='body'></textarea>");
+            // // A button to submit a new note, with the id of the article saved to it
+            // $("#articlesaved").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
+            // // A button to delete a note
+            // $("#articlesaved").append("<button data-id='" + data._id + "' id='deletenote'>Delete Note</button>");
+            }
 
+       });
+});
 
 // Whenever someone clicks a p tag
 $(document).on("click", "p", function () {
